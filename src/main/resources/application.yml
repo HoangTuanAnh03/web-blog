@@ -1,0 +1,21 @@
+server:
+    port: 8080
+
+spring:
+    application:
+        name: blog-service
+
+    datasource:
+        url: jdbc:mysql://localhost:3306/blogdb
+        username: root
+        password: root
+    jpa:
+        show-sql: true
+        hibernate:
+            ddl-auto: update
+    sql:
+        init:
+            mode: always
+redis:
+    host: localhost
+    port: 6379
