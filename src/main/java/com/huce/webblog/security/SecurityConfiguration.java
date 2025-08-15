@@ -2,6 +2,7 @@ package com.huce.webblog.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -55,7 +56,8 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity,
                                            CustomAuthenticationEntryPoint customAuthenticationEntryPoint) throws Exception {
-        httpSecurity.authorizeHttpRequests(request -> request.requestMatchers(PUBLIC_ENDPOINTS)
+        httpSecurity.cors(Customizer.withDefaults())
+                .authorizeHttpRequests(request -> request.requestMatchers(PUBLIC_ENDPOINTS)
                 .permitAll()
 //                .requestMatchers("/users/lock/*").hasAuthority(PredefinedRole.ROLE_ADMIN)
 //                .requestMatchers("/users").hasAuthority(PredefinedRole.ROLE_ADMIN)
