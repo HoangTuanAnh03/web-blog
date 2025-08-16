@@ -19,6 +19,8 @@ public enum ErrorCode {
     LOGIN_WITH_GOOGLE(1404, "The account is registered using the google method", HttpStatus.BAD_REQUEST),
     VERIFY_EXPIRED(1005, "Code is expired, verification failed", HttpStatus.BAD_REQUEST),
     VERIFY_FAILED(400, "Code is incorrect, verification failed", HttpStatus.BAD_REQUEST),
+    CANNOT_SEND_EMAIL(400, "Cannot send email", HttpStatus.BAD_REQUEST),
+
     ;
 
     ErrorCode(int code, String message, HttpStatusCode statusCode) {

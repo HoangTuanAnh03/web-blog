@@ -159,7 +159,8 @@ public class UserServiceImpl implements UserService {
 
         Map<String, String> param = new HashMap<>();
         param.put("code", code);
-        param.put("name", newUser.getName());
+        param.put("fullname", newUser.getName());
+        param.put("email", newUser.getEmail());
 
         NotificationEvent notificationEvent = NotificationEvent.builder()
                 .channel("EMAIL")
@@ -170,7 +171,7 @@ public class UserServiceImpl implements UserService {
                 .build();
 
         // Publish message to kafka
-        kafkaTemplate.send("notification-delivery", notificationEvent);
+        kafkaTemplate.send("email_register", notificationEvent);
 
         return this.userMapper.toUserResponse(newUser);
     }
@@ -259,7 +260,7 @@ public class UserServiceImpl implements UserService {
                 .build();
 
         // Publish message to kafka
-        kafkaTemplate.send("forgot-password", notificationEvent);
+        kafkaTemplate.send("email_forgot_password", notificationEvent);
         return true;
     }
 }

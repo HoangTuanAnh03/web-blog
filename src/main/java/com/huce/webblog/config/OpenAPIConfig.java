@@ -45,10 +45,10 @@ public class OpenAPIConfig {
 
     private Info createApiInfo() {
         return new Info()
-                .title("Job Hunter API")
+                .title("Web Blog API")
                 .version("1.0")
                 .contact(createContact())
-                .description("This API exposes all endpoints (job hunter)")
+                .description("This API exposes all endpoints web blog")
                 .termsOfService("https://tuananhne.com/donate")
                 .license(createLicense());
     }
@@ -59,7 +59,7 @@ public class OpenAPIConfig {
                 .info(createApiInfo())
                 .servers(List.of(
                         createServer("http://localhost:8080", "Server URL in Development environment"),
-                        createServer("https://tuananhne.com", "Server URL in Production environment")))
+                        createServer("https://api.sportbooking.site", "Server URL in Production environment")))
                 .addSecurityItem(new SecurityRequirement().addList("Bearer Authentication"))
                 .components(new Components().addSecuritySchemes("Bearer Authentication", createAPIKeyScheme()));
     }
