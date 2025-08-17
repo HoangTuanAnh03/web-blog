@@ -1,5 +1,6 @@
 package com.huce.webblog.security;
 
+import com.huce.webblog.util.constant.PredefinedRole;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -28,7 +29,8 @@ public class SecurityConfiguration {
             "/users/fetchUserByIdIn",
             "/auth/**",
             "/actuator/**",
-            "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui/index.html#/"
+            "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui/index.html#/",
+            "/blog/category"
     };
 
     private final CustomJwtDecoder customJwtDecoder;
@@ -60,7 +62,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(request -> request.requestMatchers(PUBLIC_ENDPOINTS)
                 .permitAll()
 //                .requestMatchers("/users/lock/*").hasAuthority(PredefinedRole.ROLE_ADMIN)
-//                .requestMatchers("/users").hasAuthority(PredefinedRole.ROLE_ADMIN)
+                .requestMatchers("/blog/category/**").hasAuthority(PredefinedRole.ROLE_ADMIN)
                 .anyRequest().authenticated());
 
         httpSecurity.oauth2ResourceServer(oauth2 -> oauth2.jwt(jwtConfigurer -> jwtConfigurer

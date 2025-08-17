@@ -8,8 +8,8 @@ import java.util.List;
 public interface ICategoryService {
     public List<CategoryResponse> getAll();
     public CategoryResponse findByCid(Long cid);
-    CategoryResponse createCategory(CreateCategoryRequest createCategoryRequest, boolean isAdmin);
+    CategoryResponse createCategory(CreateCategoryRequest createCategoryRequest);
 
-    CategoryResponse deleteCategory(Long cid, boolean isAdmin);
+    CategoryResponse deleteCategory(Long cid);
 
 }

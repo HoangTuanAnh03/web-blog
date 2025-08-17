@@ -39,36 +39,30 @@ public class CategoryServiceImpl implements ICategoryService {
     }
 
     @Override
-    public CategoryResponse createCategory(CreateCategoryRequest createCategoryRequest, boolean isAdmin) {
-        if (isAdmin) {
-            String cname = createCategoryRequest.getName();
-            if (categoryRepository.existsByCnameAndIsDeleted(cname, false)) {
-                throw new BadRequestException("Category existed");
-            }
-
-            Category c = Category.builder()
-                    .cname(cname)
-                    .cdesc(createCategoryRequest.getDesc())
-                    .build();
-
-            return categoryMapper.toCategoryResponse(categoryRepository.save(c));
+    public CategoryResponse createCategory(CreateCategoryRequest createCategoryRequest) {
+        String cname = createCategoryRequest.getName();
+        if (categoryRepository.existsByCnameAndIsDeleted(cname, false)) {
+            throw new BadRequestException("Category existed");
         }
-        throw new BadRequestException("Not access");
+
+        Category c = Category.builder()
+                .cname(cname)
+                .cdesc(createCategoryRequest.getDesc())
+                .build();
+
+        return categoryMapper.toCategoryResponse(categoryRepository.save(c));
     }
 
     @Override
-    public CategoryResponse deleteCategory(Long cid, boolean isAdmin) {
+    public CategoryResponse deleteCategory(Long cid) {
         Category c = categoryRepository.findFirstByIdAndIsDeletedFalse(cid);
         if (c == null) throw new BadRequestException("Category not found");
         if (c.isDeleted()) {
             throw new BadRequestException("Category already deleted");
         }
-        if (isAdmin) {
-            c.setDeleted(true);
-            categoryRepository.save(c);
-            return categoryMapper.toCategoryResponse(c);
-        }
-        throw new BadRequestException("Not access");
+        c.setDeleted(true);
+        categoryRepository.save(c);
+        return categoryMapper.toCategoryResponse(c);
     }
 
 }

@@ -16,8 +16,9 @@ import java.util.List;
 @AllArgsConstructor
 public class CategoryController {
     ICategoryService categoryService;
+
     @GetMapping("")
-    public ResponseEntity<ApiResponse<List<CategoryResponse>>> getAll(){
+    public ResponseEntity<ApiResponse<List<CategoryResponse>>> getAll() {
         ApiResponse<List<CategoryResponse>> apiResponse = ApiResponse.<List<CategoryResponse>>builder()
                 .code(HttpStatus.OK.value())
                 .message("Success")
@@ -28,13 +29,11 @@ public class CategoryController {
                 .body(apiResponse);
     }
 
-    @PostMapping("")
+    @PostMapping("/create")
     public ResponseEntity<ApiResponse<CategoryResponse>> create(
-            @RequestBody CreateCategoryRequest createCategoryRequest,
-            @RequestHeader(value = "X-Auth-User-Authorities", required = false, defaultValue = "") String role
-    ){
-        boolean isAdmin = role.equalsIgnoreCase("role_admin");
-        CategoryResponse categoryResponse = categoryService.createCategory(createCategoryRequest, isAdmin);
+            @RequestBody CreateCategoryRequest createCategoryRequest
+    ) {
+        CategoryResponse categoryResponse = categoryService.createCategory(createCategoryRequest);
         ApiResponse<CategoryResponse> apiResponse = ApiResponse.<CategoryResponse>builder()
                 .code(HttpStatus.OK.value())
                 .message("Success")
@@ -45,16 +44,14 @@ public class CategoryController {
                 .body(apiResponse);
     }
 
-    @DeleteMapping("/{cid}")
+    @DeleteMapping("/delete/{cid}")
     public ResponseEntity<ApiResponse<CategoryResponse>> deleteCategory(
-            @PathVariable() Long cid,
-            @RequestHeader(value = "X-Auth-User-Authorities", required = false, defaultValue = "") String role
-    ){
-        boolean isAdmin = role.equalsIgnoreCase("role_admin");
+            @PathVariable() Long cid
+    ) {
         ApiResponse<CategoryResponse> apiResponse = ApiResponse.<CategoryResponse>builder()
                 .code(HttpStatus.OK.value())
                 .message("Success")
-                .data(categoryService.deleteCategory(cid, isAdmin))
+                .data(categoryService.deleteCategory(cid))
                 .build();
         return ResponseEntity.ok(apiResponse);
     }
