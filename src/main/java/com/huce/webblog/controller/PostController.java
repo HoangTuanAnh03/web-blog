@@ -5,7 +5,10 @@ import com.huce.webblog.dto.request.PostRequest;
 import com.huce.webblog.dto.response.PostResponse;
 import com.huce.webblog.dto.response.PostSummaryAIResponse;
 import com.huce.webblog.dto.response.PostSummaryResponse;
+import com.huce.webblog.entity.User;
 import com.huce.webblog.service.IBlogService;
+import com.huce.webblog.service.UserService;
+import com.huce.webblog.util.SecurityUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -13,18 +16,21 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/blog/post")
 @AllArgsConstructor
 public class PostController {
     private final IBlogService postService;
+    SecurityUtil securityUtil;
+    UserService userService;
 
     @PostMapping("")
     public ResponseEntity<ApiResponse<PostResponse>> create(
-            @RequestBody PostRequest postRequest,
-            @RequestHeader("X-Auth-User-Id") String uid
+            @RequestBody PostRequest postRequest
     ) {
+        String uid = userService.fetchMyInfo().getId();
         PostResponse post = postService.create(postRequest, uid);
         ApiResponse<PostResponse> apiResponse = ApiResponse.<PostResponse>builder()
                 .code(HttpStatus.OK.value())
@@ -50,7 +56,9 @@ public class PostController {
     }
 
     @GetMapping("/{pid}")
-    public ResponseEntity<ApiResponse<PostResponse>> view(@PathVariable(value = "pid") String pid, @RequestHeader(value = "X-Auth-User-Id", required = false) String uid) {
+    public ResponseEntity<ApiResponse<PostResponse>> view(
+            @PathVariable(value = "pid") String pid) {
+        String uid = userService.fetchMyInfo().getId();
         PostResponse p = postService.view(pid, uid);
         ApiResponse<PostResponse> apiResponse = ApiResponse.<PostResponse>builder()
                 .code(HttpStatus.OK.value())
@@ -80,13 +88,14 @@ public class PostController {
         return ResponseEntity.ok(apiResponse);
     }
 
-    @DeleteMapping("/{pid}")
+    @DeleteMapping("delete/{pid}")
     public ResponseEntity<ApiResponse<PostResponse>> deletePost(
-            @PathVariable() String pid,
-            @RequestHeader(value = "X-Auth-User-Id", required = false, defaultValue = "") String uid,
-            @RequestHeader(value = "X-Auth-User-Authorities", required = false, defaultValue = "") String role
+            @PathVariable() String pid
     ) {
-        boolean isAdmin = role.equalsIgnoreCase("role_admin");
+        String uid = userService.fetchMyInfo().getId();
+        User currentUser = userService.fetchUserById(uid);
+        boolean isAdmin = currentUser.getRole().equalsIgnoreCase("admin");
+
         ApiResponse<PostResponse> apiResponse = ApiResponse.<PostResponse>builder()
                 .code(HttpStatus.OK.value())
                 .message("Success")
