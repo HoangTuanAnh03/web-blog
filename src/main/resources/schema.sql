@@ -5,15 +5,37 @@ CREATE TABLE IF NOT EXISTS category (
     );
 
 INSERT INTO category (id, cname, cdesc)
-VALUES (1, 'Technology', 'Công Nghệ'),
-       (2, 'Heal', 'Sức Khỏe & Làm Đẹp'),
-       (3, 'Travel', 'Du Lịch'),
-       (4, 'Food', 'Ẩm Thực'),
-       (5, 'Finance', 'Tài Chính'),
-       (6, 'Education', 'Giáo Dục'),
-       (7, 'Entertainment', 'Giải Trí'),
-       (8, 'Science', 'Khoa Học') ON DUPLICATE KEY
-UPDATE id = id;
+SELECT 1, 'Technology', 'Công Nghệ'
+    WHERE NOT EXISTS (SELECT 1 FROM category WHERE id = 1);
+
+INSERT INTO category (id, cname, cdesc)
+SELECT 2, 'Heal', 'Sức Khỏe & Làm Đẹp'
+    WHERE NOT EXISTS (SELECT 1 FROM category WHERE id = 2);
+
+INSERT INTO category (id, cname, cdesc)
+SELECT 3, 'Travel', 'Du Lịch'
+    WHERE NOT EXISTS (SELECT 1 FROM category WHERE id = 3);
+
+INSERT INTO category (id, cname, cdesc)
+SELECT 4, 'Food', 'Ẩm Thực'
+    WHERE NOT EXISTS (SELECT 1 FROM category WHERE id = 4);
+
+INSERT INTO category (id, cname, cdesc)
+SELECT 5, 'Finance', 'Tài Chính'
+    WHERE NOT EXISTS (SELECT 1 FROM category WHERE id = 5);
+
+INSERT INTO category (id, cname, cdesc)
+SELECT 6, 'Education', 'Giáo Dục'
+    WHERE NOT EXISTS (SELECT 1 FROM category WHERE id = 6);
+
+INSERT INTO category (id, cname, cdesc)
+SELECT 7, 'Entertainment', 'Giải Trí'
+    WHERE NOT EXISTS (SELECT 1 FROM category WHERE id = 7);
+
+INSERT INTO category (id, cname, cdesc)
+SELECT 8, 'Science', 'Khoa Học'
+    WHERE NOT EXISTS (SELECT 1 FROM category WHERE id = 8);
+
 
 
 CREATE TABLE IF NOT EXISTS `users`
