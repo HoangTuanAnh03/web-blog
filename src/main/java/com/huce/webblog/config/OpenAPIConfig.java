@@ -58,7 +58,7 @@ public class OpenAPIConfig {
         return new OpenAPI()
                 .info(createApiInfo())
                 .servers(List.of(
-                        createServer("http://localhost:8080", "Server URL in Development environment"),
+                        createServer("http://localhost:8081", "Server URL in Development environment"),
                         createServer("https://api.sportbooking.site", "Server URL in Production environment")))
                 .addSecurityItem(new SecurityRequirement().addList("Bearer Authentication"))
                 .components(new Components().addSecuritySchemes("Bearer Authentication", createAPIKeyScheme()));
