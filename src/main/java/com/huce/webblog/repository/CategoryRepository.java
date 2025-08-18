@@ -14,4 +14,5 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     List<Category> findByIdIn(List<Long> cids);
     Category findFirstByIdAndIsDeletedFalse(Long cid);
 
+
 }

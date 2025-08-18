@@ -33,6 +33,10 @@ public class SecurityConfiguration {
             "/blog/category"
     };
 
+    private static final String[] PRIVATE_ENDPOINTS = {
+            "/blog/category/**",
+    };
+
     private final CustomJwtDecoder customJwtDecoder;
 
     public SecurityConfiguration(CustomJwtDecoder customJwtDecoder) {
@@ -60,10 +64,10 @@ public class SecurityConfiguration {
                                            CustomAuthenticationEntryPoint customAuthenticationEntryPoint) throws Exception {
         httpSecurity.cors(Customizer.withDefaults())
                 .authorizeHttpRequests(request -> request.requestMatchers(PUBLIC_ENDPOINTS)
-                .permitAll()
+                        .permitAll()
 //                .requestMatchers("/users/lock/*").hasAuthority(PredefinedRole.ROLE_ADMIN)
-                .requestMatchers("/blog/category/**").hasAuthority(PredefinedRole.ROLE_ADMIN)
-                .anyRequest().authenticated());
+                        .requestMatchers(PRIVATE_ENDPOINTS).hasAuthority(PredefinedRole.ROLE_ADMIN)
+                        .anyRequest().authenticated());
 
         httpSecurity.oauth2ResourceServer(oauth2 -> oauth2.jwt(jwtConfigurer -> jwtConfigurer
                         .decoder(customJwtDecoder)
