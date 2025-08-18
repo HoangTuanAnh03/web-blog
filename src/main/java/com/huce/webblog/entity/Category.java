@@ -21,6 +21,7 @@ public class Category {
 
 	private String cname;
 	private String cdesc;
+	private boolean isDeleted;
 
 	@OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
 	private List<CategoryBlog> categoryBlogs;
