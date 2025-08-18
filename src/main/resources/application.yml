@@ -1,25 +1,23 @@
 server:
-    port: 8081
+    port: 8080
 
 spring:
     application:
         name: blog-service
 
     datasource:
-        url: jdbc:mysql://localhost:3307/blogdb
+        url: jdbc:mysql://localhost:3306/blogdb
         username: root
-        password:
+        password: root
     jpa:
         show-sql: true
         hibernate:
             ddl-auto: update
     sql:
         init:
-            mode: never
+            mode: always
 
     kafka:
-        listener:
-            auto-startup: false
         bootstrap-servers: localhost:9094
         producer:
             key-serializer: org.apache.kafka.common.serialization.StringSerializer
@@ -34,9 +32,8 @@ spring:
     mail:
         host: smtp.gmail.com
         port: 587
-
-        username: tu21072003@gmail.com
-        password: fejptdktbwzpkcni
+        username: hoangtuananh1772003@gmail.com
+        password: cmtacndiibwvjsbp
         properties:
             mail:
                 smtp:
@@ -66,4 +63,3 @@ auth:
     verify:
         register-code-duration: 86400000 # 24 * 60 * 60 * 1000 = 86400000 milli  --- 1 day
         forgot-password-code-duration: 86400000 # 24 * 60 * 60 * 1000 = 86400000 milli  --- 1 day
-
