@@ -3,6 +3,8 @@ package com.huce.webblog.service.impl;
 import com.huce.webblog.dto.request.FilterRequest;
 import com.huce.webblog.dto.response.FilterResponse;
 import com.huce.webblog.service.IPythonService;
+import lombok.experimental.NonFinal;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
@@ -10,11 +12,14 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 @Service
 public class PythonServiceImpl implements IPythonService {
+    @NonFinal
+    @Value("${api.python}") String urlPython;
+
     @Override
     public FilterResponse filterContent(String content){
 //		WebClient client = WebClient.create("http://localhost:1992/api/v1");
         WebClient client = WebClient.builder()
-                .baseUrl("http://localhost:1992/api/v1")
+                .baseUrl(urlPython)
                 .exchangeStrategies(ExchangeStrategies.builder()
                         .codecs(configurer -> configurer
                                 .defaultCodecs()
@@ -32,7 +37,7 @@ public class PythonServiceImpl implements IPythonService {
 
     @Override
     public String summaryContent(String content) {
-        WebClient client = WebClient.create("http://localhost:1992/api/v1");
+        WebClient client = WebClient.create(urlPython);
         return client.post()
                 .uri("/summary")
                 .contentType(MediaType.APPLICATION_JSON)
