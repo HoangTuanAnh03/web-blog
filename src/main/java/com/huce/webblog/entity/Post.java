@@ -67,5 +67,8 @@ public class Post extends BaseEntity{
 	public void incrementCommentsCount() {
 		this.commentsCount++;
 	}
+	public void decrementCommentsCount() {
+		this.commentsCount--;
+	}
 
 }
