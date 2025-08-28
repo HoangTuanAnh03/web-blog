@@ -6,6 +6,7 @@ import com.huce.webblog.dto.request.LockRequest;
 import com.huce.webblog.dto.request.PasswordCreationRequest;
 import com.huce.webblog.dto.request.UpdateUserRequest;
 import com.huce.webblog.dto.response.AuthenticationResponse;
+import com.huce.webblog.dto.response.PostSummaryResponse;
 import com.huce.webblog.dto.response.SimpInfoUserResponse;
 import com.huce.webblog.dto.response.UserResponse;
 import com.huce.webblog.service.UserService;
@@ -13,7 +14,12 @@ import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -88,5 +94,16 @@ public class UserController {
                 .message("Verify email register success")
                 .data(null)
                 .build();
+    }
+
+    @GetMapping("/getAllUser")
+    public ResponseEntity<ApiResponse<Page<UserResponse>>> getAllUser(
+            @RequestParam(defaultValue = "0") int page) {
+        ApiResponse<Page<UserResponse>> apiResponse = ApiResponse.<Page<UserResponse>>builder()
+                .code(HttpStatus.OK.value())
+                .message("Success")
+                .data(userService.getAllUser("USER", page, 12))
+                .build();
+        return ResponseEntity.ok(apiResponse);
     }
 }

@@ -5,6 +5,7 @@ import com.huce.webblog.dto.request.PostRequest;
 import com.huce.webblog.dto.response.PostResponse;
 import com.huce.webblog.dto.response.PostSummaryAIResponse;
 import com.huce.webblog.dto.response.PostSummaryResponse;
+import com.huce.webblog.dto.response.UserResponse;
 import com.huce.webblog.entity.User;
 import com.huce.webblog.service.IBlogService;
 import com.huce.webblog.service.UserService;
@@ -114,6 +115,17 @@ public class PostController {
                 .code(HttpStatus.OK.value())
                 .message("Success")
                 .data(postService.getByUid(page, 12, uid))
+                .build();
+        return ResponseEntity.ok(apiResponse);
+    }
+
+    @GetMapping("/getPostSensitive")
+    public ResponseEntity<ApiResponse<Page<PostResponse>>> getPostSensitive(
+            @RequestParam(defaultValue = "0") int page) {
+        ApiResponse<Page<PostResponse>> apiResponse = ApiResponse.<Page<PostResponse>>builder()
+                .code(HttpStatus.OK.value())
+                .message("Success")
+                .data(postService.getPostHasSensitiveContent(true, page, 12))
                 .build();
         return ResponseEntity.ok(apiResponse);
     }
