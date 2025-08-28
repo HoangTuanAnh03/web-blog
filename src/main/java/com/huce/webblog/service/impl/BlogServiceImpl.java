@@ -244,4 +244,18 @@ public class BlogServiceImpl implements IBlogService {
 
         return new PageImpl<>(responses, PageRequest.of(page, size), posts.getTotalElements());
     }
+
+    @Override
+    public Page<PostResponse> getPostHasSensitiveContent(Boolean hasSensitiveContent, int page, int size) {
+        Page<Post> posts = postRepository.findAllByHasSensitiveContent(hasSensitiveContent, PageRequest.of(page, size,Sort.by("createdAt").descending()));
+
+        List<PostResponse> responses = posts.getContent().stream()
+                .map((Post post) -> {
+                    List<Post> relatedPost = postRepository.findRelatedPosts(post.getId());
+                    return postMapper.toPostResponse(post, relatedPost);
+                })
+                .toList();
+
+        return new PageImpl<>(responses, PageRequest.of(page, size), posts.getTotalElements());
+    }
 }

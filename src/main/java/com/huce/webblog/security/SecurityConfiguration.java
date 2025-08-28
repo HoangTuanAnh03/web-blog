@@ -35,6 +35,8 @@ public class SecurityConfiguration {
 
     private static final String[] PRIVATE_ENDPOINTS = {
             "/blog/category/**",
+            "users/getAllUser",
+            "blog/post/getPostSensitive",
     };
 
     private final CustomJwtDecoder customJwtDecoder;
