@@ -55,7 +55,7 @@ public class EmailServiceImpl implements EmailService {
 
         Map<String, Object> props = new HashMap<>();
         props.put("email", message.getParam().get("email"));
-        props.put("fullname", message.getParam().get("fullname"));
+        props.put("name", message.getParam().get("name"));
         props.put("url", url);
 
         return DataMailDto.builder().to(message.getRecipient()).subject(message.getSubject()).props(props).build();

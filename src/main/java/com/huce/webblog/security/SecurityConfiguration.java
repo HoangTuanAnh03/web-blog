@@ -35,6 +35,8 @@ public class SecurityConfiguration {
 
     private static final String[] PRIVATE_ENDPOINTS = {
             "/blog/category/**",
+            "/blog/admin/dashboard",
+            "/blog/admin/category",
             "users/getAllUser",
             "blog/post/getPostSensitive",
     };
