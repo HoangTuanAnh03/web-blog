@@ -24,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.data.domain.*;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -219,6 +220,17 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<SimpInfoUserResponse> fetchUserByIdIn(List<String> ids) {
         return userRepository.findByIdIn(ids).stream().map(userMapper::toSimpInfoUserResponse).toList();
+    }
+
+    @Override
+    public Page<UserResponse> getAllUser(String role, int page, int size) {
+        Page<User> users = userRepository.findAllByRole(role, PageRequest.of(page, size, Sort.by("createdAt").descending()));
+
+        List<UserResponse> responses = users.getContent().stream()
+                .map(userMapper::toUserResponse)
+                .toList();
+
+        return new PageImpl<>(responses, PageRequest.of(page, size), users.getTotalElements());
     }
 
     /**

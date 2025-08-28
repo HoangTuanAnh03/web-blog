@@ -16,7 +16,7 @@ import java.util.List;
 public interface PostRepository extends JpaRepository<Post, String>, JpaSpecificationExecutor<Post> {
     List<Post> findByTitleIgnoreCaseContainingOrRawContentIgnoreCaseContaining(String title, String content);
 
-    Page<Post> findAllByOrderByCreatedAtDesc(Pageable pageable);
+    Page<Post> findAllByHasSensitiveContent(Boolean hasSensitiveContent,Pageable pageable);
 
     Post findFirstById(String pid);
 

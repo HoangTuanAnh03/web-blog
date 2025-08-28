@@ -24,6 +24,9 @@ public class Comment extends BaseEntity{
 	@Column(name = "uid")
 	private String uid;
 
+	@Column(name = "is_deleted")
+	boolean isDeleted = false;
+
 	@ManyToOne
 	@JoinColumn(name = "pid")
 	@JsonBackReference
