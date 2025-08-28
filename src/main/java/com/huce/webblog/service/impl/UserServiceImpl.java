@@ -159,7 +159,7 @@ public class UserServiceImpl implements UserService {
 
         Map<String, String> param = new HashMap<>();
         param.put("code", code);
-        param.put("fullname", newUser.getName());
+        param.put("name", newUser.getName());
         param.put("email", newUser.getEmail());
 
         NotificationEvent notificationEvent = NotificationEvent.builder()
@@ -228,7 +228,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Boolean forgotPassword(String email) {
         User user = userRepository.findFirstByEmailAndActiveAndIsLocked(email, true, false).orElseThrow(
-            () -> new AppException(ErrorCode.USER_NOT_EXISTED)
+                () -> new AppException(ErrorCode.USER_NOT_EXISTED)
         );
 
         if (!StringUtils.hasText(user.getPassword()))
