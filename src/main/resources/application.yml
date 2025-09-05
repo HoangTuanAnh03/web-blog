@@ -48,7 +48,9 @@ redis:
 api:
     verify-register: "http://localhost:3000/verify/register?code="
     verify-forgot-password: "http://localhost:3000/users/password/edit?code="
-    python: "http://localhost:1992/api/v1"
+    python:
+        filter: "http://localhost:1992/api/v1"
+        search: "http://localhost:8000"
 
 auth:
     outbound:

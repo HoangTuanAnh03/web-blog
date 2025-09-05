@@ -97,8 +97,9 @@ public class BlogServiceImpl implements IBlogService {
             throw new BadRequestException("Tối đa 3 chủ đề mỗi bài.");
         }
         FilterResponse filter = pythonService.filterContent(post.getContent());
+        String id = SlugUtil.toSlug(post.getTitle());
         Post p = Post.builder()
-                .id(SlugUtil.toSlug(post.getTitle()))
+                .id(id)
                 .viewsCount(0)
                 .commentsCount(0)
                 .content(post.getContent())
@@ -109,6 +110,7 @@ public class BlogServiceImpl implements IBlogService {
                 .rawContent(post.getContent())
                 .content(filter.getFiltered_content())
                 .build();
+        System.out.println(post.getTextContent());
         List<CategoryBlog> categoryBlogs;
         if (post.getCids() != null && !post.getCids().isEmpty()) {
             List<Category> categories = categoryRepository.findByIdIn(post.getCids());
@@ -134,6 +136,8 @@ public class BlogServiceImpl implements IBlogService {
                         .isRead(false)
                         .build())
                 .toList();
+
+        pythonService.saveVector(post.getTextContent(), id, post.getTitle());
 
         notificationRepository.saveAll(notifications);
         return postResponse;
@@ -225,6 +229,7 @@ public class BlogServiceImpl implements IBlogService {
         if (isAdmin || uid.equals(p.getUid())) {
             p.setDeleted(true);
             postRepository.save(p);
+            pythonService.deleteVector(p.getId());
             return postMapper.toPostResponse(p, List.of());
         }
         throw new BadRequestException("Not access");

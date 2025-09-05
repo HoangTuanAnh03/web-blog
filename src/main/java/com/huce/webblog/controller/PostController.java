@@ -2,12 +2,14 @@ package com.huce.webblog.controller;
 
 import com.huce.webblog.dto.ApiResponse;
 import com.huce.webblog.dto.request.PostRequest;
+import com.huce.webblog.dto.request.SearchRequest;
 import com.huce.webblog.dto.response.PostResponse;
 import com.huce.webblog.dto.response.PostSummaryAIResponse;
 import com.huce.webblog.dto.response.PostSummaryResponse;
 import com.huce.webblog.dto.response.UserResponse;
 import com.huce.webblog.entity.User;
 import com.huce.webblog.service.IBlogService;
+import com.huce.webblog.service.IPythonService;
 import com.huce.webblog.service.UserService;
 import com.huce.webblog.util.SecurityUtil;
 import lombok.AllArgsConstructor;
@@ -24,8 +26,23 @@ import java.util.Optional;
 @AllArgsConstructor
 public class PostController {
     private final IBlogService postService;
+    IPythonService pythonService;
     SecurityUtil securityUtil;
     UserService userService;
+
+    @PostMapping("/chat")
+    public ResponseEntity<ApiResponse<Object>> create(
+            @RequestBody SearchRequest searchRequest
+    ) {
+        ApiResponse<Object> apiResponse = ApiResponse.<Object>builder()
+                .code(HttpStatus.OK.value())
+                .message("Success")
+                .data(pythonService.chat(searchRequest))
+                .build();
+
+        return ResponseEntity.ok()
+                .body(apiResponse);
+    }
 
     @PostMapping("")
     public ResponseEntity<ApiResponse<PostResponse>> create(

@@ -17,6 +17,7 @@ public class PostRequest {
     private String title;
     @NotBlank(message = "Nội dung không được để trống")
     private String content;
+    private String textContent;
     private String cover;
     private List<Long> cids;
     private List<String> hashtags;
